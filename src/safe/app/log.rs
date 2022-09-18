@@ -45,3 +45,12 @@ pub fn logs_move_next<K, V>(
         )
     }
 }
+
+pub fn logs_get_proof(
+    pos: *const HeightPos,
+    proof: *mut *const Merkle::Node
+) -> u32 {
+    unsafe { 
+        Env::LogGetProof(pos, proof) 
+    }
+}
