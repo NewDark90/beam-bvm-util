@@ -10,7 +10,7 @@ A light wrapper around beam_bvm_interface with some extra utilities that would b
 """
 
 [lib]
-crate-type = ["cdylib", "rlib"]
+crate-type = ["lib"]
 
 [dependencies]
 beam_bvm_interface = "0.1.0"
