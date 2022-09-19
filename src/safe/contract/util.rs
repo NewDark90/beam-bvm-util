@@ -17,3 +17,15 @@ pub fn emit_log<K, V>(
         )
     }
 }
+
+pub fn update_shader<V>(
+    val_ptr: *const V, 
+    val_size: u32
+) {
+    unsafe {
+        Env::UpdateShader(
+            val_ptr as *const c_void,
+            val_size
+        )
+    }
+}

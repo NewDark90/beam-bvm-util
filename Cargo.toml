@@ -1,7 +1,13 @@
 [package]
-name = "beam-bvm-util"
+name = "beam_bvm_util"
 version = "0.1.0"
 edition = "2021"
+license = "GPL-3.0"
+repository = "https://github.com/NewDark90/beam-bvm-util"
+readme = "README.md"
+description = """
+A light wrapper around beam_bvm_interface with some extra utilities that would be useful for interacting with the bvm.
+"""
 
 [lib]
 crate-type = ["cdylib", "rlib"]
