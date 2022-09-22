@@ -1,7 +1,7 @@
 [package]
 name = "beam_bvm_util"
 #First two version numbers will match BVM, last will be for this project 
-version = "7.1.0"
+version = "7.1.1"
 edition = "2021"
 license = "GPL-3.0"
 repository = "https://github.com/NewDark90/beam-bvm-util"
@@ -14,4 +14,7 @@ A light wrapper around beam_bvm_interface with some extra utilities that would b
 crate-type = ["lib"]
 
 [dependencies]
-beam_bvm_interface = "7.1.13105"
+beam_bvm_interface = "7.1.13106"
+
+[build]
+target = "wasm-wasi"
