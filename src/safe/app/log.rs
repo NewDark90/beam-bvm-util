@@ -1,9 +1,11 @@
 use beam_bvm_interface::root::*;
 
+/// https://github.com/BeamMW/shader-sdk/wiki/Logs_Close
 pub fn logs_close(slot: u32) {
     unsafe { Env::Logs_Close(slot) }
 }
 
+/// https://github.com/BeamMW/shader-sdk/wiki/Logs_Enum
 pub fn logs_enum<U, V>(
     key0: *const U,
     key0_size: u32,
@@ -24,6 +26,7 @@ pub fn logs_enum<U, V>(
     }
 }
 
+/// https://github.com/BeamMW/shader-sdk/wiki/Logs_MoveNext
 pub fn logs_move_next<K, V>(
     slot: u32,
     key: *mut K,
@@ -46,6 +49,7 @@ pub fn logs_move_next<K, V>(
     }
 }
 
+/// https://github.com/BeamMW/shader-sdk/wiki/LogGetProof
 pub fn logs_get_proof(
     pos: *const HeightPos,
     proof: *mut *const Merkle::Node

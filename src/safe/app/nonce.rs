@@ -1,13 +1,16 @@
 use beam_bvm_interface::root::*;
 
+/// https://github.com/BeamMW/shader-sdk/wiki/SlotInit
 pub fn slot_init(extra_seed_ptr: *const c_void, extra_seed_size: u32, slot: u32) {
     unsafe { Env::SlotInit(extra_seed_ptr, extra_seed_size, slot) }
 }
 
+/// https://github.com/BeamMW/shader-sdk/wiki/get_SlotImage
 pub fn get_slot_image(result_nonce: *mut Secp_point, slot: u32) {
     unsafe { Env::get_SlotImage(result_nonce, slot) }
 }
 
+/// https://github.com/BeamMW/shader-sdk/wiki/get_SlotImageEx
 pub fn get_slot_image_ex(
     result_nonce: *mut Secp_point,
     generator_ptr: *const Secp_point,
@@ -16,6 +19,7 @@ pub fn get_slot_image_ex(
     unsafe { Env::get_SlotImageEx(result_nonce, generator_ptr, slot) }
 }
 
+/// https://github.com/BeamMW/shader-sdk/wiki/get_BlindSk
 pub fn get_blind_sk(
     result_scalar: *mut Secp_scalar,
     id_ptr: *const usize,

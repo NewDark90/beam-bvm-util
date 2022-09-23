@@ -1,5 +1,6 @@
 use beam_bvm_interface::root::*;
 
+/// https://github.com/BeamMW/shader-sdk/wiki/LoadVar
 pub fn load_var<K, V>(
     key: *const K,
     key_size: u32,
@@ -18,6 +19,7 @@ pub fn load_var<K, V>(
     }
 }
 
+/// https://github.com/BeamMW/shader-sdk/wiki/SaveVar (used in a way to clear variable)
 pub fn del_var<K>(key: *const K, key_size: u32) -> u32 {
     unsafe {
         Env::SaveVar(
@@ -30,6 +32,7 @@ pub fn del_var<K>(key: *const K, key_size: u32) -> u32 {
     }
 }
 
+/// https://github.com/BeamMW/shader-sdk/wiki/SaveVar
 pub fn save_var<K, V>(key: *const K, key_size: u32, val: *const V, val_size: u32, tag: u8) -> u32 {
     unsafe {
         Env::SaveVar(

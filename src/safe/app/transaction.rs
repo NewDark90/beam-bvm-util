@@ -1,13 +1,11 @@
 use beam_bvm_interface::root::*;
 
+/// https://github.com/BeamMW/shader-sdk/wiki/SelectContext
 pub fn select_context(dependent: u8, charge_needed: u32) {
     unsafe { Env::SelectContext(dependent, charge_needed) }
 }
 
-pub fn generate_random(result_ptr: *mut c_void, size: u32) {
-    unsafe { Env::GenerateRandom(result_ptr, size) }
-}
-
+/// https://github.com/BeamMW/shader-sdk/wiki/GenerateKernel
 pub fn generate_kernel<U, V>(
     cid: *const ContractID,
     method: u32,
@@ -36,6 +34,7 @@ pub fn generate_kernel<U, V>(
     }
 }
 
+/// https://github.com/BeamMW/shader-sdk/wiki/GenerateKernelAdvanced
 pub fn generate_kernel_advanced<U, V>(
     cid: *const ContractID,
     method: u32,
