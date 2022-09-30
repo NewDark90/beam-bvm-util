@@ -1,3 +1,5 @@
+use core::mem::size_of;
+
 use beam_bvm_interface::root::*;
 
 /// https://github.com/BeamMW/shader-sdk/wiki/CallFar
@@ -17,6 +19,24 @@ pub fn call_far<T>(
             inherit_context,
         )
     }
+}
+
+
+/// https://github.com/BeamMW/shader-sdk/wiki/CallFar
+/// Size parameters figured out internally
+pub fn call_far_simple<T>(
+    contract_id: *const ContractID,
+    method: u32,
+    args_ptr: *mut T,
+    inherit_context: u8,
+) {
+    call_far(
+        contract_id,
+        method,
+        args_ptr,
+        size_of::<T>() as u32,
+        inherit_context
+    )
 }
 
 /// https://github.com/BeamMW/shader-sdk/wiki/get_CallDepth
