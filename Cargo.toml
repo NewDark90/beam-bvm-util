@@ -14,5 +14,5 @@ A light wrapper around beam_bvm_interface with some extra utilities that would b
 crate-type = ["lib"]
 
 [dependencies]
-beam_bvm_interface = "7.1.13106"
+beam_bvm_interface = "7.1.13107"
 cstr_core = "0.2.6"

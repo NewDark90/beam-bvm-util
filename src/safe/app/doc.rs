@@ -1,4 +1,6 @@
-use crate::util::common::to_c_string::*;
+use core::ptr::null;
+
+use crate::{util::common::{to_c_string::*, from_c_string::FromCString}, types::sized_result::SizedResult};
 use beam_bvm_interface::root::*;
 
 // -- DOC CREATE --
@@ -20,7 +22,7 @@ pub fn doc_add_num64(id: &str, val: u64) {
 
 /// https://github.com/BeamMW/shader-sdk/wiki/DocAddBlob
 pub fn doc_add_blob<V>(id: &str, val: *const V, val_size: u32) {
-    unsafe { Env::DocAddBlob(id.to_c_string(), val as *const c_void, val_size) }
+    unsafe { Env::DocAddBlob(id.to_c_string() as *const c_char, val as *const c_void, val_size) }
 }
 
 /// https://github.com/BeamMW/shader-sdk/wiki/DocAddGroup
@@ -46,10 +48,30 @@ pub fn doc_close_array() {
 // -- DOC GET --
 
 /// https://github.com/BeamMW/shader-sdk/wiki/DocGetText
-pub fn doc_get_text<V>(id: &str, val: *mut V, val_size: u32) -> u32 {
-    unsafe { 
+pub fn doc_get_text(id: &str, val: *mut c_char, val_size: u32) -> u32 {
+    unsafe { Env::DocGetText(id.as_ptr(), val, val_size) }
+}
 
-        Env::DocGetText(id.to_c_string(), val as *mut c_char, val_size) 
+
+/// https://github.com/BeamMW/shader-sdk/wiki/DocGetText
+pub fn doc_get_text_simple<'a, V>(id: &'a str) -> SizedResult<&'a str> {
+    unsafe { 
+        let nullptr = null::<c_char>();
+        let mut result: SizedResult::<&str> = Default::default();
+
+        result.size = Env::DocGetText(id.to_c_string(), nullptr as *mut c_char, 0);
+        
+        if result.size > 0
+        {
+            let buffer = Env::StackAlloc(result.size) as *mut c_char;
+            Env::DocGetText(id.to_c_string(),buffer, result.size);
+            match buffer.from_c_string() {
+                Ok(r) => { result.value = r; },
+                Err(_) => {  }
+            }
+        }
+
+        result
     }
 }
 
@@ -67,3 +89,25 @@ pub fn doc_get_num32(id: &str, out: *mut u32) -> u8 {
 pub fn doc_get_blob<V>(id: &str, val: *mut V, val_size: u32) -> u32 {
     unsafe { Env::DocGetBlob(id.to_c_string(), val as *mut c_void, val_size) }
 }
+
+pub fn doc_get_blob_simple<V>(id: &str) -> SizedResult<*mut c_void> {
+    unsafe { 
+        let nullptr = null::<c_void>();
+        let mut result = SizedResult::<*mut c_void>{
+            size: 0,
+            value: nullptr as *mut c_void,
+        };
+
+        result.size = Env::DocGetBlob(id.to_c_string(), nullptr as *mut c_void, 0);
+        
+        if result.size > 0
+        {
+            let buffer = Env::StackAlloc(result.size);
+            Env::DocGetBlob(id.to_c_string(),buffer , result.size);
+            result.value = buffer;
+        }
+
+        result
+    }
+}
+
