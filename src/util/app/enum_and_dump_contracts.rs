@@ -1,13 +1,9 @@
-use super::{
-    contracts_walker::*, document_writer::*, key_sid_cid::*,
-    var_reader::*,
-};
+use super::{contracts_walker::*, document_writer::*, key_sid_cid::*, var_reader::*};
 use beam_bvm_interface::root::{Env::*, *};
 use core::mem::size_of_val;
 
-
 pub fn enum_and_dump_contracts(sid: &ShaderID) {
-    enum_and_dump_contracts_prop("contracts", sid)
+    enum_and_dump_contracts_prop("contracts\0", sid)
 }
 
 pub fn enum_and_dump_contracts_prop(array_prop_name: &str, sid: &ShaderID) {
@@ -32,21 +28,22 @@ pub fn enum_and_dump_contracts_prop(array_prop_name: &str, sid: &ShaderID) {
         while wlk.move_next() {
             arr.object(|obj| {
                 obj.blob_prop(
-                    "cid",
+                    "cid\0",
                     &wlk.key.m_KeyInContract.cid,
-                    size_of_val(&wlk.key.m_KeyInContract.cid) as u32
-                ).u64_prop("height", wlk.height);
+                    size_of_val(&wlk.key.m_KeyInContract.cid) as u32,
+                )
+                .u64_prop("height\0", wlk.height);
             });
         }
     });
 }
 
 pub trait ContractDumpArrayPropWriter {
-    fn contract_dump_prop(self: &Self, prop_name: &str, sid: &ShaderID)  -> &Self;
+    fn contract_dump_prop(self: &Self, prop_name: &str, sid: &ShaderID) -> &Self;
 }
 
 impl ContractDumpArrayPropWriter for ObjectFuncs {
-    fn contract_dump_prop(self: &Self, prop_name: &str, sid: &ShaderID)  -> &Self {
+    fn contract_dump_prop(self: &Self, prop_name: &str, sid: &ShaderID) -> &Self {
         enum_and_dump_contracts_prop(prop_name, sid);
         self
     }

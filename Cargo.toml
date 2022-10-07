@@ -1,7 +1,7 @@
 [package]
 name = "beam_bvm_util"
 #First two version numbers will match BVM, last will be for this project 
-version = "7.1.6"
+version = "7.1.7"
 edition = "2021"
 license = "GPL-3.0"
 repository = "https://github.com/NewDark90/beam-bvm-util"
@@ -12,8 +12,6 @@ A light wrapper around beam_bvm_interface with some extra utilities that would b
 
 [lib]
 crate-type = ["rlib"]
-doctest = false
 
 [dependencies]
 beam_bvm_interface = "7.1.13107"
-cstr_core = "0.2.6"
