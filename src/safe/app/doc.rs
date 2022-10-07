@@ -52,6 +52,22 @@ pub fn doc_get_text(id: &str, val: *mut c_char, val_size: u32) -> u32 {
     unsafe { Env::DocGetText(id.as_ptr(), val, val_size) }
 }
 
+/// https://github.com/BeamMW/shader-sdk/wiki/DocGetNum64
+pub fn doc_get_num64(id: &str, out: *mut u64) -> u8 {
+    unsafe { Env::DocGetNum64(id.to_c_string(), out) }
+}
+
+/// https://github.com/BeamMW/shader-sdk/wiki/DocGetNum32
+pub fn doc_get_num32(id: &str, out: *mut u32) -> u8 {
+    unsafe { Env::DocGetNum32(id.to_c_string(), out) }
+}
+
+/// https://github.com/BeamMW/shader-sdk/wiki/DocGetBlob
+pub fn doc_get_blob<V>(id: &str, val: *mut V, val_size: u32) -> u32 {
+    unsafe { Env::DocGetBlob(id.to_c_string(), val as *mut c_void, val_size) }
+}
+
+// -- DOC GET SIMPLE --
 
 /// https://github.com/BeamMW/shader-sdk/wiki/DocGetText
 pub fn doc_get_text_simple<'a, V>(id: &'a str) -> SizedResult<&'a str> {
@@ -73,21 +89,6 @@ pub fn doc_get_text_simple<'a, V>(id: &'a str) -> SizedResult<&'a str> {
 
         result
     }
-}
-
-/// https://github.com/BeamMW/shader-sdk/wiki/DocGetNum64
-pub fn doc_get_num64(id: &str, out: *mut u64) -> u8 {
-    unsafe { Env::DocGetNum64(id.to_c_string(), out) }
-}
-
-/// https://github.com/BeamMW/shader-sdk/wiki/DocGetNum32
-pub fn doc_get_num32(id: &str, out: *mut u32) -> u8 {
-    unsafe { Env::DocGetNum32(id.to_c_string(), out) }
-}
-
-/// https://github.com/BeamMW/shader-sdk/wiki/DocGetBlob
-pub fn doc_get_blob<V>(id: &str, val: *mut V, val_size: u32) -> u32 {
-    unsafe { Env::DocGetBlob(id.to_c_string(), val as *mut c_void, val_size) }
 }
 
 pub fn doc_get_blob_simple<V>(id: &str) -> SizedResult<*mut c_void> {

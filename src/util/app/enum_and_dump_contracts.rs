@@ -5,9 +5,14 @@ use super::{
 use beam_bvm_interface::root::{Env::*, *};
 use core::mem::size_of_val;
 
+
 pub fn enum_and_dump_contracts(sid: &ShaderID) {
+    enum_and_dump_contracts_prop("contracts", sid)
+}
+
+pub fn enum_and_dump_contracts_prop(array_prop_name: &str, sid: &ShaderID) {
     let doc = DocumentWriter {};
-    doc.array_prop("contracts", |arr| {
+    doc.array_prop(array_prop_name, |arr| {
         let mut wlk = ContractsWalker {
             key: KeySidCid {
                 m_Prefix: KeyPrefix {
@@ -34,4 +39,15 @@ pub fn enum_and_dump_contracts(sid: &ShaderID) {
             });
         }
     });
+}
+
+pub trait ContractDumpArrayPropWriter {
+    fn contract_dump_prop(self: &Self, prop_name: &str, sid: &ShaderID)  -> &Self;
+}
+
+impl ContractDumpArrayPropWriter for ObjectFuncs {
+    fn contract_dump_prop(self: &Self, prop_name: &str, sid: &ShaderID)  -> &Self {
+        enum_and_dump_contracts_prop(prop_name, sid);
+        self
+    }
 }
