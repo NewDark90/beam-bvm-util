@@ -1,7 +1,7 @@
 [package]
 name = "beam_bvm_util"
 #First two version numbers will match BVM, last will be for this project 
-version = "7.1.7"
+version = "7.1.8"
 edition = "2021"
 license = "GPL-3.0"
 repository = "https://github.com/NewDark90/beam-bvm-util"
