@@ -16,6 +16,7 @@ pub fn add_sig(pubkey: &PubKey) {
 }
 
 /// https://github.com/BeamMW/shader-sdk/wiki/AssetCreate
+/// https://github.com/BeamMW/beam/wiki/Asset-Descriptor-v1.0
 pub fn asset_create(meta_ptr: *const c_void, meta_size: u32) -> AssetID {
     unsafe { Env::AssetCreate(meta_ptr, meta_size) }
 }
