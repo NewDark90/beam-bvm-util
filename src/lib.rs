@@ -2,7 +2,6 @@
 
 extern crate beam_bvm_interface;
 
-pub mod safe;
-pub mod simple;
-pub mod types;
-pub mod util;
+pub mod common;
+pub mod app;
+pub mod contract;
