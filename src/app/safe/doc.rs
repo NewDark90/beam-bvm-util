@@ -1,13 +1,11 @@
 use core::{ptr::null};
 use beam_bvm_interface::root::*;
 
-const NULL_STR_PTR: *const u8 = null::<c_char>();
-
 fn prop_name(id: &str) -> *const u8 {
     if id.len() > 0 {
         id.as_ptr()
     } else {
-        NULL_STR_PTR
+        null::<c_char>()
     }
 }
 

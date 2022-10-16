@@ -15,10 +15,7 @@ pub fn doc_get_text(id: &str) -> Result<SizedResult<String>, u32> {
 
     let mut str_data: String = String::with_capacity(size as usize);
     safe::doc_get_text::<String>(id, &mut str_data, size);
-    Ok(SizedResult::<String> {
-        value: str_data,
-        size
-    })
+    Ok(SizedResult::<String>::new(str_data, size))
 }
 
 /// https://github.com/BeamMW/shader-sdk/wiki/DocGetBlob

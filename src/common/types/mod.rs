@@ -1,5 +1,4 @@
-pub mod exists_result;
 pub mod sized_result;
+pub mod sized_ptr;
 
-pub use exists_result::*;
 pub use sized_result::*;
