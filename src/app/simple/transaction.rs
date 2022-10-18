@@ -1,8 +1,7 @@
-use core::{mem::size_of_val };
-
+use core::{mem::size_of_val, ffi::CStr };
 use beam_bvm_interface::root::*;
 
-use crate::{app::safe, common::traits::to_sized_ptr::ToSizedPtr};
+use crate::{app::safe, common::extensions::to_sized_ptr::ToSizedPtr};
 
 /// https://github.com/BeamMW/shader-sdk/wiki/GenerateKernel
 /// Size parameters figured out internally
@@ -12,7 +11,7 @@ pub fn generate_kernel<TArg>(
     arg: &TArg,
     funds: Option<&FundsChange>,
     sigs: Option<&SigRequest>,
-    comment: Option<&str>,
+    comment: &CStr,
     charge: u32,
 ) {
     
@@ -29,7 +28,7 @@ pub fn generate_kernel<TArg>(
         funds_sized.size(),
         sigs_sized.ptr(),
         sigs_sized.size(),
-        comment.unwrap_or("\0"),
+        comment,
         charge,
     );
 }
@@ -44,7 +43,7 @@ pub fn generate_kernel_advanced<TArg>(
     arg: &TArg,
     funds: Option<&FundsChange>,
     sigs: Option<&PubKey>,
-    comment: &str,
+    comment: &CStr,
     charge: u32,
     min: Height,
     max: Height,

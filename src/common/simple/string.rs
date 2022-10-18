@@ -1,11 +1,13 @@
-use crate::common::safe;
+use core::ffi::CStr;
+
+use crate::common::{safe, extensions::*};
 
 /// https://github.com/BeamMW/shader-sdk/wiki/Strlen
-pub fn strlen(p: &str) -> u32 {
-    safe::strlen(p.as_ptr())
+pub fn strlen(p: &CStr) -> u32 {
+    safe::strlen(p.as_bvm_ptr())
 }
 
 /// https://github.com/BeamMW/shader-sdk/wiki/Strcmp
-pub fn strcmp(sz1: &str, sz2: &str) -> i32 {
-    safe::strcmp(sz1.as_ptr(), sz2.as_ptr())
+pub fn strcmp(sz1: &CStr, sz2: &CStr) -> i32 {
+    safe::strcmp(sz1.as_bvm_ptr(), sz2.as_bvm_ptr())
 }

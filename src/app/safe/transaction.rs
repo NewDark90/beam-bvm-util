@@ -1,4 +1,8 @@
+use core::ffi::CStr;
+
 use beam_bvm_interface::root::*;
+
+use crate::common::extensions::*;
 
 /// https://github.com/BeamMW/shader-sdk/wiki/SelectContext
 pub fn select_context(dependent: u8, charge_needed: u32) {
@@ -15,7 +19,7 @@ pub fn generate_kernel<U>(
     funds_size: u32,
     sigs: *const SigRequest,
     sigs_size: u32,
-    comment: &str,
+    comment: &CStr,
     charge: u32,
 ) {
     unsafe {
@@ -28,7 +32,7 @@ pub fn generate_kernel<U>(
             funds_size,
             sigs,
             sigs_size,
-            comment.as_ptr(),
+            comment.as_bvm_ptr(),
             charge,
         )
     }
@@ -44,7 +48,7 @@ pub fn generate_kernel_advanced<TArg>(
     funds_size: u32,
     sigs: *const PubKey,
     sigs_size: u32,
-    comment: &str,
+    comment: &CStr,
     charge: u32,
     min: Height,
     max: Height,
@@ -65,7 +69,7 @@ pub fn generate_kernel_advanced<TArg>(
             funds_size,
             sigs,
             sigs_size,
-            comment.as_ptr(),
+            comment.as_bvm_ptr(),
             charge,
             min,
             max,

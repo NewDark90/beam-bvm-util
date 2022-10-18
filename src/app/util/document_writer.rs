@@ -1,4 +1,6 @@
-use crate::app::safe::*;
+use core::ffi::CStr;
+
+use crate::{app::safe::*, common::extensions::*};
 
 pub struct DocumentWriter {}
 
@@ -32,7 +34,7 @@ impl NumU64Writer for ArrayFuncs { }
 
 pub trait ObjectWriter {
     fn object<T: Fn(ObjectFuncs) -> ()>(self: &Self, props_fn: T) -> &Self{
-        doc_add_group("");
+        doc_add_group(&CStr::empty());
         props_fn(ObjectFuncs {});
         doc_close_group();
         self
@@ -41,7 +43,7 @@ pub trait ObjectWriter {
 
 pub trait ArrayWriter {
     fn array<T: Fn(ArrayFuncs) -> ()>(self: &Self, props_fn: T) -> &Self {
-        doc_add_array("");
+        doc_add_array(&CStr::empty());
         props_fn(ArrayFuncs {});
         doc_close_array();
         self
@@ -49,28 +51,28 @@ pub trait ArrayWriter {
 }
 
 pub trait StringWriter {
-    fn string(self: &Self, value: &str) -> &Self {
-        doc_add_text("", value);
+    fn string(self: &Self, value: &CStr) -> &Self {
+        doc_add_text(&CStr::empty(), value);
         self
     }
 }
 
 pub trait NumU32Writer {
     fn u32(self: &Self, value: u32) -> &Self {
-        doc_add_num32("", value);
+        doc_add_num32(&CStr::empty(), value);
         self
     }
 }
 
 pub trait NumU64Writer {
     fn u64(self: &Self, value: u64) -> &Self {
-        doc_add_num64("", value);
+        doc_add_num64(&CStr::empty(), value);
         self
     }
 }
 
 pub trait ObjectPropWriter {
-    fn object_prop<T: Fn(ObjectFuncs) -> ()>(self: &Self, prop_name: &str, props_fn: T) -> &Self {
+    fn object_prop<T: Fn(ObjectFuncs) -> ()>(self: &Self, prop_name: &CStr, props_fn: T) -> &Self {
         doc_add_group(prop_name);
         props_fn(ObjectFuncs {});
         doc_close_group();
@@ -79,7 +81,7 @@ pub trait ObjectPropWriter {
 }
 
 pub trait ArrayPropWriter {
-    fn array_prop<T: Fn(ArrayFuncs) -> ()>(self: &Self, prop_name: &str, props_fn: T) -> &Self {
+    fn array_prop<T: Fn(ArrayFuncs) -> ()>(self: &Self, prop_name: &CStr, props_fn: T) -> &Self {
         doc_add_array(prop_name);
         props_fn(ArrayFuncs {});
         doc_close_array();
@@ -88,28 +90,28 @@ pub trait ArrayPropWriter {
 }
 
 pub trait BlobPropWriter {
-    fn blob_prop<V>(self: &Self, prop_name: &str, value: &V, value_size: u32) -> &Self {
+    fn blob_prop<V>(self: &Self, prop_name: &CStr, value: &V, value_size: u32) -> &Self {
         doc_add_blob(prop_name, value, value_size);
         self
     }
 }
 
 pub trait StringPropWriter {
-    fn string_prop(self: &Self, prop_name: &str, value: &str) -> &Self {
+    fn string_prop(self: &Self, prop_name: &CStr, value: &CStr) -> &Self {
         doc_add_text(prop_name, value);
         self
     }
 }
 
 pub trait NumU32PropWriter {
-    fn u32_prop(self: &Self, prop_name: &str, value: u32) -> &Self {
+    fn u32_prop(self: &Self, prop_name: &CStr, value: u32) -> &Self {
         doc_add_num32(prop_name, value);
         self
     }
 }
 
 pub trait NumU64PropWriter {
-    fn u64_prop(self: &Self, prop_name: &str, value: u64) -> &Self {
+    fn u64_prop(self: &Self, prop_name: &CStr, value: u64) -> &Self {
         doc_add_num64(prop_name, value);
         self
     }
