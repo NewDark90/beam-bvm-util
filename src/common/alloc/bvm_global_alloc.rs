@@ -5,7 +5,7 @@ use core::alloc::{
 
 use beam_bvm_interface::root::c_void;
 
-use crate::common::safe::mem::*;
+use crate::common::safe::{mem::*, halt};
 
 pub struct BvmGlobalAlloc { }
 
@@ -27,5 +27,5 @@ pub static BVM_ALLOCATOR: BvmGlobalAlloc = BvmGlobalAlloc{};
 
 #[alloc_error_handler]
 fn oom(_: core::alloc::Layout) -> ! {
-    panic!()
+    halt();
 }
