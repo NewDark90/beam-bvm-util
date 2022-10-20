@@ -4,3 +4,4 @@ pub mod log_reader;
 pub mod contracts_walker;
 pub mod enum_and_dump_contracts;
 pub mod document_writer;
+pub mod document_macros;

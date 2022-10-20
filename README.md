@@ -12,3 +12,8 @@ Documentation of the methods usable within the BVM can be found at the [BeamMW S
 Install with cargo: 
 
 `cargo install beam_bvm_util`
+
+
+## Crate Compilation Requirements
+
+Rust Version >= 1.64.0

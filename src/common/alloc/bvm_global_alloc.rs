@@ -24,3 +24,8 @@ unsafe impl GlobalAlloc for BvmGlobalAlloc {
 
 #[global_allocator]
 pub static BVM_ALLOCATOR: BvmGlobalAlloc = BvmGlobalAlloc{};
+
+#[alloc_error_handler]
+fn oom(_: core::alloc::Layout) -> ! {
+    panic!()
+}

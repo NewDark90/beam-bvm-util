@@ -32,9 +32,11 @@ impl StringWriter for ArrayFuncs { }
 impl NumU32Writer for ArrayFuncs { }
 impl NumU64Writer for ArrayFuncs { }
 
+
+
 pub trait ObjectWriter {
     fn object<T: Fn(ObjectFuncs) -> ()>(self: &Self, props_fn: T) -> &Self{
-        doc_add_group(&CStr::empty());
+        doc_add_group(CStr::empty());
         props_fn(ObjectFuncs {});
         doc_close_group();
         self
@@ -43,7 +45,7 @@ pub trait ObjectWriter {
 
 pub trait ArrayWriter {
     fn array<T: Fn(ArrayFuncs) -> ()>(self: &Self, props_fn: T) -> &Self {
-        doc_add_array(&CStr::empty());
+        doc_add_array(CStr::empty());
         props_fn(ArrayFuncs {});
         doc_close_array();
         self
@@ -52,21 +54,21 @@ pub trait ArrayWriter {
 
 pub trait StringWriter {
     fn string(self: &Self, value: &CStr) -> &Self {
-        doc_add_text(&CStr::empty(), value);
+        doc_add_text(CStr::empty(), value);
         self
     }
 }
 
 pub trait NumU32Writer {
     fn u32(self: &Self, value: u32) -> &Self {
-        doc_add_num32(&CStr::empty(), value);
+        doc_add_num32(CStr::empty(), value);
         self
     }
 }
 
 pub trait NumU64Writer {
     fn u64(self: &Self, value: u64) -> &Self {
-        doc_add_num64(&CStr::empty(), value);
+        doc_add_num64(CStr::empty(), value);
         self
     }
 }

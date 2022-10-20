@@ -15,4 +15,4 @@ impl<T> SizedResult<T> {
 
     pub fn size(&self) -> u32 { self.size }
     pub fn value(&self) -> &T { &self.value }
-}
+} 

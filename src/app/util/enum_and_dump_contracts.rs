@@ -1,15 +1,15 @@
 use crate::common::extensions::*;
 
 use super::{contracts_walker::*, document_writer::*, key_sid_cid::*, var_reader::*};
-use alloc::ffi::CString;
+//use alloc::ffi::CString;
 use beam_bvm_interface::root::{Env::*, *};
-use core::mem::size_of_val;
+use core::{mem::size_of_val, ffi::CStr};
 
 pub fn enum_and_dump_contracts(sid: &ShaderID) {
     enum_and_dump_contracts_prop(&"contracts".to_c_string(), sid)
 }
 
-pub fn enum_and_dump_contracts_prop(array_prop_name: &CString, sid: &ShaderID) {
+pub fn enum_and_dump_contracts_prop(array_prop_name: &CStr, sid: &ShaderID) {
     let doc = DocumentWriter {};
     doc.array_prop(array_prop_name, |arr| {
         let mut wlk = ContractsWalker {
@@ -42,11 +42,11 @@ pub fn enum_and_dump_contracts_prop(array_prop_name: &CString, sid: &ShaderID) {
 }
 
 pub trait ContractDumpArrayPropWriter {
-    fn contract_dump_prop(self: &Self, prop_name: &CString, sid: &ShaderID) -> &Self;
+    fn contract_dump_prop(self: &Self, prop_name: &CStr, sid: &ShaderID) -> &Self;
 }
 
 impl ContractDumpArrayPropWriter for ObjectFuncs {
-    fn contract_dump_prop(self: &Self, prop_name: &CString, sid: &ShaderID) -> &Self {
+    fn contract_dump_prop(self: &Self, prop_name: &CStr, sid: &ShaderID) -> &Self {
         enum_and_dump_contracts_prop(prop_name, sid);
         self
     }

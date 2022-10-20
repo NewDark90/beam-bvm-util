@@ -1,0 +1,10 @@
+[toolchain]
+# Look, I don't want to be on the nightly channel, but I can't really use no_std + alloc with a custom allocator without it currently.
+# Issues for tracking when this can go stable (which seems soon, I hope)
+# 
+# https://github.com/rust-lang/rust/issues/51540
+# https://github.com/rust-lang/rust/issues/66741
+# https://github.com/rust-lang/rust/issues/66740
+# https://github.com/rust-lang/rust/issues/83430
+
+channel = "nightly"

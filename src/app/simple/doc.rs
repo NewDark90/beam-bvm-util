@@ -4,6 +4,7 @@ use core::{ffi::CStr, mem::size_of_val, ptr::null};
 
 use crate::{app::safe, common::types::sized_result::SizedResult};
 
+
 /// https://github.com/BeamMW/shader-sdk/wiki/DocGetText
 pub fn doc_get_text(id: &CStr) -> Result<SizedResult<CString>, u32> {
     let size = safe::doc_get_text(id, &mut null::<c_char>(), 0);
@@ -13,11 +14,15 @@ pub fn doc_get_text(id: &CStr) -> Result<SizedResult<CString>, u32> {
 
     let mut str_data = Vec::<u8>::with_capacity(size as usize);
     safe::doc_get_text::<Vec<u8>>(id, &mut str_data, size);
-    let c_str = CString::from_vec_with_nul(str_data)
-        .expect("CString data from BVM should be correct.");
 
-    Ok(SizedResult::<CString>::new(c_str, size))
+    match CString::from_vec_with_nul(str_data) {
+        Ok(c_str) => {
+            Ok(SizedResult::<CString>::new(c_str, size))
+        },
+        Err(_) => Err(size)
+    }
 }
+
 
 /// https://github.com/BeamMW/shader-sdk/wiki/DocGetBlob
 /// Ok returns the size
