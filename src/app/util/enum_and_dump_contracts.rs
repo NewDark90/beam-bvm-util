@@ -6,7 +6,7 @@ use beam_bvm_interface::root::{Env::*, *};
 use core::{mem::size_of_val, ffi::CStr};
 
 pub fn enum_and_dump_contracts(sid: &ShaderID) {
-    enum_and_dump_contracts_prop(&"contracts".to_c_string(), sid)
+    enum_and_dump_contracts_prop("contracts\0".to_c_str(), sid)
 }
 
 pub fn enum_and_dump_contracts_prop(array_prop_name: &CStr, sid: &ShaderID) {
@@ -31,11 +31,11 @@ pub fn enum_and_dump_contracts_prop(array_prop_name: &CStr, sid: &ShaderID) {
         while wlk.move_next() {
             arr.object(|obj| {
                 obj.blob_prop(
-                    &"cid".to_c_string(),
+                    "cid\0".to_c_str(),
                     &wlk.key.m_KeyInContract.cid,
                     size_of_val(&wlk.key.m_KeyInContract.cid) as u32,
                 )
-                .u64_prop(&"height".to_c_string(), wlk.height);
+                .u64_prop("height\0".to_c_str(), wlk.height);
             });
         }
     });

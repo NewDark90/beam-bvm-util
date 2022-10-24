@@ -27,5 +27,6 @@ pub static BVM_ALLOCATOR: BvmGlobalAlloc = BvmGlobalAlloc{};
 
 #[alloc_error_handler]
 fn oom(_: core::alloc::Layout) -> ! {
-    halt();
+    halt(); 
+    loop { }
 }

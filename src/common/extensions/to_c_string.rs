@@ -1,35 +1,43 @@
-//use alloc::{ffi::CString, borrow::ToOwned, string::String};
+use alloc::{ffi::CString, string::String, vec::Vec};
 
-/* 
 pub trait ToCString {
     fn to_c_string(&self) -> CString;
 }
 
 impl ToCString for String {
+    /// Ideally does **NOT** contain the trailing \0. 
+    /// 
+    /// However, it **is safe** to use any \0 within the string as it will strip them out and add it's own.
     fn to_c_string(&self) -> CString {
-        CString::new(str::replace(&self.to_owned(), "\0", "")).expect("Removing nulls from string for CString::new failed")
-    }
-}
-
-*/
-
-use core::ffi::{CStr};
-
-pub trait ToCStr {
-    fn to_c_string(&self) -> &CStr;
-}
-
-
-impl ToCStr for &str {
-    /// **MUST** include a null byte at the end or it is unsafe. 
-    fn to_c_string(&self) -> &CStr {
         to_c_string(self)
     }
 }
 
-/// **MUST** include a null byte at the end or it is unsafe. 
-pub const fn to_c_string(string: &str) -> &CStr {
-    unsafe { 
-        CStr::from_bytes_with_nul_unchecked(string.as_bytes()) 
+impl ToCString for &str {
+    /// Ideally does **NOT** contain the trailing \0. 
+    /// 
+    /// However, it **is safe** to use any \0 within the string as it will strip them out and add it's own.
+    /// 
+    /// Will create a new instance
+    fn to_c_string(&self) -> CString {
+        to_c_string(self)
     }
 }
+
+/// Ideally does **NOT** contain the trailing \0. 
+/// 
+/// However, it **is safe** to use any \0 within the string as it will strip them out and add it's own.
+pub fn to_c_string(string: &str) -> CString {
+    let len = string.len();
+    let mut vec = Vec::<u8>::with_capacity(len.checked_add(1).unwrap_or(len));
+    for byte in string.as_bytes() {
+        if *byte != 0 { vec.push(*byte); }
+    }
+    vec.push(0);
+
+    unsafe {
+        //Above code safely removes all nulls with one pushed to the end. 
+        CString::from_vec_with_nul_unchecked(vec)
+    }
+}
+

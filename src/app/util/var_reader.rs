@@ -1,5 +1,5 @@
 use crate::app::safe::*;
-use core::mem::size_of_val;
+use core::mem::{size_of_val};
 
 #[repr(C)]
 pub struct VarReaderEx<const FLEXIBLE: bool> {
@@ -21,14 +21,14 @@ impl<const FLEXIBLE: bool> VarReaderEx<FLEXIBLE> {
     }
 
     pub fn new<K1, K2>(key1: &K1, key2: &K2) -> VarReaderEx<FLEXIBLE> {
-        let mut r: VarReaderEx<FLEXIBLE> = Default::default();
-        r.enum_internal(
+        let mut reader: VarReaderEx<FLEXIBLE> = Default::default();
+        reader.enum_internal(
             key1,
             size_of_val(key1) as u32,
             key2,
             size_of_val(key2) as u32,
         );
-        r
+        reader
     }
 
     pub fn move_next<K, V>(
@@ -56,7 +56,19 @@ impl<const FLEXIBLE: bool> VarReaderEx<FLEXIBLE> {
         true
     }
 
-    pub fn read<K, V>(key: &K, value: &mut V) -> bool {
+    pub fn move_all_t<K: Sized, V: Sized, TOnFind: Fn(&K, &V) -> ()>(&self, on_find: TOnFind) -> u32 {
+        let mut found: u32 = 0;
+        let mut key_holder: K = unsafe { core::mem::zeroed() };
+        let mut value_holder: V = unsafe { core::mem::zeroed() };
+
+        while self.move_next_t(&mut key_holder, &mut value_holder) {
+            found += 1;
+            on_find(&key_holder, &value_holder);
+        }
+        found
+    }
+
+    pub fn read_single<K, V>(key: &K, value: &mut V) -> bool {
         let mut r: VarReader = Default::default();
         let mut key_size: u32 = size_of_val(key) as u32;
         r.enum_internal(key, key_size, key, key_size);
