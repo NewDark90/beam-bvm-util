@@ -62,7 +62,12 @@ impl FundsWalker {
         }
 	}
 
-	pub fn move_next(&mut self) -> bool
+	pub fn move_next_params(&self, key: &mut KeyFunds, val: &mut ValueFunds) -> bool
+	{
+		self.reader.move_next_t(key, val) 
+	}
+
+    pub fn move_next(&mut self) -> bool
 	{
         let mut key: KeyFunds = Default::default();
 		let mut val: ValueFunds = Default::default();
@@ -77,9 +82,12 @@ impl FundsWalker {
 		return true;
 	}
 
-    pub fn move_all<TFunc: Fn(AssetID, &ValueFunds) -> ()>(&mut self, on_move: TFunc) {
-        while self.move_next() {
-            on_move(self.asset_id, &self.funds);
+    pub fn move_all<TFunc: Fn(AssetID, &ValueFunds) -> ()>(&self, on_move: TFunc) {
+        let mut key: KeyFunds = Default::default();
+		let mut val: ValueFunds = Default::default();
+
+        while self.move_next_params(&mut key, &mut val) {
+            on_move(key.m_KeyInContract, &val);
         }
     }
 
